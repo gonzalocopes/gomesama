@@ -1,1 +1,1 @@
-web: gunicorn gomesama_backend.wsgi
+web: gunicorn gomesama_backend.wsgi --bind 0.0.0.0:8080

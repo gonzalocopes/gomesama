@@ -1,10 +1,6 @@
-"""
-Django settings for gomesama_backend project.
-"""
-
 from pathlib import Path
 import os
-import dj_database_url  # Para la base de datos en Render
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -15,17 +11,12 @@ SECRET_KEY = os.environ.get(
 
 DEBUG = os.environ.get("DEBUG", "True") == "True"
 
-# ===========================
-# ALLOWED HOSTS
-# ===========================
 ALLOWED_HOSTS = [
-    "*",  # Render
-    "mediumpurple-kudu-727821.hostingersite.com",  # Dominio Hostinger
+    "*",  
+    "mediumpurple-kudu-727821.hostingersite.com",
+    "gomesama-backend.fly.dev"
 ]
 
-# ===========================
-# APPS
-# ===========================
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -34,23 +25,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Apps propias
     'productos',
 
-    # API
     'rest_framework',
-
-    # CORS
     'corsheaders',
 ]
 
-# ===========================
-# MIDDLEWARE
-# ===========================
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # CORS primero
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Archivos estáticos
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -59,17 +43,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# ===========================
-# CORS
-# ===========================
 CORS_ALLOWED_ORIGINS = [
-    "https://mediumpurple-kudu-727821.hostingersite.com",  # Hostinger
+    "https://mediumpurple-kudu-727821.hostingersite.com",
 ]
 CORS_ALLOW_CREDENTIALS = True
 
-# ===========================
-# URLS
-# ===========================
 ROOT_URLCONF = 'gomesama_backend.urls'
 
 TEMPLATES = [
@@ -90,20 +68,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'gomesama_backend.wsgi.application'
 
-# ===========================
-# DATABASE
-# ===========================
+# 🔹 Base de datos (SQLite en local, PostgreSQL en Fly.io)
 DATABASES = {
     'default': dj_database_url.config(
         default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-        conn_max_age=600,
-        ssl_require=False
+        conn_max_age=600
     )
 }
 
-# ===========================
-# PASSWORDS
-# ===========================
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -111,25 +83,17 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# ===========================
-# LANGUAGE & TIMEZONE
-# ===========================
 LANGUAGE_CODE = 'es-ar'
 TIME_ZONE = 'America/Argentina/Buenos_Aires'
 USE_I18N = True
 USE_TZ = True
 
-# ===========================
-# STATIC & MEDIA FILES
-# ===========================
+# 🔹 Archivos estáticos y media
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# MEDIA configurado para Render
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# 🔥 Cuando se use DEBUG=False, forzar URL absoluta en producción
-if not DEBUG:
-    MEDIA_URL = 'https://gonzalocopes.onrender.com/media/'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
