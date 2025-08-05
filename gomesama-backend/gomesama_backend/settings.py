@@ -127,7 +127,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # MEDIA configurado para Render
-MEDIA_URL = 'https://gonzalocopes.onrender.com/media/'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# 🔥 Cuando se use DEBUG=False, forzar URL absoluta en producción
+if not DEBUG:
+    MEDIA_URL = 'https://gonzalocopes.onrender.com/media/'
