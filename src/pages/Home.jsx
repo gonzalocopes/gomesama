@@ -11,7 +11,7 @@ export default function Home() {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api/productos/")
+      .get("https://gonzalocopes.onrender.com/api/productos/")
       .then((res) => {
         const productosRandom = res.data
           .sort(() => Math.random() - 0.5)

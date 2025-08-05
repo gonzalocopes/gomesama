@@ -15,7 +15,7 @@ export default function Catalog() {
 
   const fetchProductos = () => {
     axios
-      .get("http://127.0.0.1:8000/api/productos/")
+      .get("https://gonzalocopes.onrender.com/api/productos/")
       .then((res) => setProductos(res.data))
       .catch((err) => console.error("Error cargando productos:", err));
   };

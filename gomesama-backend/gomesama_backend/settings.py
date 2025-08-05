@@ -18,7 +18,10 @@ DEBUG = os.environ.get("DEBUG", "True") == "True"
 # ===========================
 # ALLOWED HOSTS
 # ===========================
-ALLOWED_HOSTS = ["*"]  # Render y dominio futuro
+ALLOWED_HOSTS = [
+    "*",  # Render
+    "mediumpurple-kudu-727821.hostingersite.com",  # Dominio de prueba Hostinger
+]
 
 # ===========================
 # APPS
@@ -59,7 +62,10 @@ MIDDLEWARE = [
 # ===========================
 # CORS (permitir React)
 # ===========================
-CORS_ALLOW_ALL_ORIGINS = True  # Para desarrollo, luego se puede restringir
+CORS_ALLOWED_ORIGINS = [
+    "https://mediumpurple-kudu-727821.hostingersite.com",  # Dominio de prueba Hostinger
+]
+CORS_ALLOW_CREDENTIALS = True  # Si necesitás cookies/autenticación
 
 # ===========================
 # URLS
