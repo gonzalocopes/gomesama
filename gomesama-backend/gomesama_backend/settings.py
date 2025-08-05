@@ -14,7 +14,7 @@ DEBUG = os.environ.get("DEBUG", "True") == "True"
 ALLOWED_HOSTS = [
     "*",  
     "mediumpurple-kudu-727821.hostingersite.com",
-    "gomesama-backend.fly.dev"
+    "gomesama-backend.fly.dev",
 ]
 
 INSTALLED_APPS = [
@@ -88,12 +88,17 @@ TIME_ZONE = 'America/Argentina/Buenos_Aires'
 USE_I18N = True
 USE_TZ = True
 
-# 🔹 Archivos estáticos y media
+# 🔹 Archivos estáticos
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# 🔹 Archivos de media (imágenes)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# 👉 En producción forzamos la URL de Fly.io para media
+if not DEBUG:
+    MEDIA_URL = 'https://gomesama-backend.fly.dev/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

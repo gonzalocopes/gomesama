@@ -14,5 +14,5 @@ urlpatterns = [
     path('api/', include(router.urls)),
 ]
 
-# 🔥 Servir archivos media en Render incluso con DEBUG=False
-urlpatterns += static('/media/', document_root=settings.MEDIA_ROOT)
+# 🔹 Servir archivos media (en local y Fly.io)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
