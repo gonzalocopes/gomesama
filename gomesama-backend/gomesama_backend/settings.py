@@ -20,7 +20,7 @@ DEBUG = os.environ.get("DEBUG", "True") == "True"
 # ===========================
 ALLOWED_HOSTS = [
     "*",  # Render
-    "mediumpurple-kudu-727821.hostingersite.com",  # Dominio de prueba Hostinger
+    "mediumpurple-kudu-727821.hostingersite.com",  # Dominio Hostinger
 ]
 
 # ===========================
@@ -50,7 +50,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # CORS primero
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Para archivos estáticos
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Archivos estáticos
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -60,12 +60,12 @@ MIDDLEWARE = [
 ]
 
 # ===========================
-# CORS (permitir React)
+# CORS
 # ===========================
 CORS_ALLOWED_ORIGINS = [
-    "https://mediumpurple-kudu-727821.hostingersite.com",  # Dominio de prueba Hostinger
+    "https://mediumpurple-kudu-727821.hostingersite.com",  # Hostinger
 ]
-CORS_ALLOW_CREDENTIALS = True  # Si necesitás cookies/autenticación
+CORS_ALLOW_CREDENTIALS = True
 
 # ===========================
 # URLS
@@ -105,18 +105,10 @@ DATABASES = {
 # PASSWORDS
 # ===========================
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 # ===========================
@@ -131,11 +123,11 @@ USE_TZ = True
 # STATIC & MEDIA FILES
 # ===========================
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Para Render
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Media
-MEDIA_URL = '/media/'
+# MEDIA configurado para Render
+MEDIA_URL = 'https://gonzalocopes.onrender.com/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

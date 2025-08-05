@@ -14,5 +14,5 @@ urlpatterns = [
     path('api/', include(router.urls)),
 ]
 
-# Servir media incluso con DEBUG=False
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Servir archivos MEDIA incluso en producción
+urlpatterns += static('/media/', document_root=settings.MEDIA_ROOT)
