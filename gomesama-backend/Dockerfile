@@ -4,7 +4,7 @@ FROM python:3.13-slim
 # Establecer directorio de trabajo
 WORKDIR /app
 
-# Evitar que Python genere archivos .pyc y habilitar logs inmediatos
+# Evitar .pyc y habilitar logs inmediatos
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
@@ -21,12 +21,11 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # Copiar el resto del proyecto
 COPY . /app/
 
-# Ejecutar collectstatic (archivos estáticos) durante la construcción
+# Ejecutar collectstatic
 RUN python manage.py collectstatic --noinput
 
-# Exponer puerto para Fly.io
+# Exponer puerto
 EXPOSE 8080
 
-# Comando de inicio usando Gunicorn
-CMD ["gunicorn", "gomesama_backend.wsgi:application", "--bind", "0.0.0.0:8080", "--workers", "2", "--timeout", "120"]
-
+# Comando de inicio con Gunicorn optimizado
+CMD ["gunicorn", "gomesama_backend.wsgi:application", "--bind", "0.0.0.0:8080", "--workers", "3", "--timeout", "120", "--max-requests", "1000", "--max-requests-jitter", "50"]
