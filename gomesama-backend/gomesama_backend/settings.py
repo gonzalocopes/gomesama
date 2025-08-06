@@ -1,6 +1,9 @@
 from pathlib import Path
 import os
 import dj_database_url
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -13,6 +16,8 @@ DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
     "gomesama-backend.fly.dev",
+    "gomesama.com",
+    "www.gomesama.com",
     "localhost",
     "127.0.0.1",
 ]
@@ -107,18 +112,13 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# 🔹 Configuración Cloudinary
-# Fly.io usará CLOUDINARY_URL desde secrets
+# 🔹 Configuración Cloudinary (usa CLOUDINARY_URL de Fly.io)
+cloudinary.config(secure=True)
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-# 🔹 Media en desarrollo (fallback)
-if DEBUG:
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# 🔹 Configuración para Fly.io
+# 🔹 Fly.io port
 PORT = int(os.environ.get("PORT", 8080))
 
 # 🔹 SSL en producción
