@@ -1,4 +1,48 @@
-# flyctl launch added from env\.gitignore
-# Created by venv; see https://docs.python.org/3/library/venv.html
-env\**\*
-fly.toml
+# Frontend files (MUY IMPORTANTE)
+node_modules/
+package.json
+package-lock.json
+yarn.lock
+src/
+public/
+dist/
+build/
+*.js
+*.jsx
+*.ts
+*.tsx
+vite.config.js
+.env.local
+.env.development
+.env.production
+tailwind.config.js
+postcss.config.js
+eslint.config.js
+index.html
+
+# Django stuff
+*.pyc
+__pycache__/
+*.so
+.Python
+.venv/
+venv/
+env/
+.env
+*.sqlite3
+*.db
+
+# Git
+.git/
+.gitignore
+README.md
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

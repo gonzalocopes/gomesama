@@ -3,7 +3,8 @@ app = "gomesama-backend"
 primary_region = "gru"
 
 [build]
-  builder = "paketobuildpacks/builder:base"
+  dockerfile = "Dockerfile"
+  ignorefile = ".dockerignore"
 
 [env]
   DJANGO_SETTINGS_MODULE = "gomesama_backend.settings"
@@ -12,20 +13,9 @@ primary_region = "gru"
 [http_service]
   internal_port = 8080
   force_https = true
-  auto_stop_machines = false   # 🔹 En booleano, no string
+  auto_stop_machines = false
   auto_start_machines = true
   min_machines_running = 1
-  processes = ["app"]
-
-[[services]]
-  protocol = "tcp"
-  internal_port = 8080
-
-  [[services.ports]]
-    port = 80
-
-  [[services.ports]]
-    port = 443
 
 [[vm]]
   memory = "1gb"

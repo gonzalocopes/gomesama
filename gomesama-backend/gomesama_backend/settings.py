@@ -9,12 +9,12 @@ SECRET_KEY = os.environ.get(
     'django-insecure-796(v2csw_rr1sbh9!1&^un-5neg1^+3v1e@sh*q58=&(hr1^t'
 )
 
-DEBUG = os.environ.get("DEBUG", "True") == "True"
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
-    "*",  
-    "mediumpurple-kudu-727821.hostingersite.com",
     "gomesama-backend.fly.dev",
+    "localhost",
+    "127.0.0.1",
 ]
 
 INSTALLED_APPS = [
@@ -24,6 +24,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Cloudinary
+    'cloudinary_storage',
+    'cloudinary',
 
     'productos',
 
@@ -43,9 +47,20 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://gomesama-backend.fly.dev",
+    "https://gomesama.com",
+    "https://www.gomesama.com",
+]
+
 CORS_ALLOWED_ORIGINS = [
     "https://mediumpurple-kudu-727821.hostingersite.com",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://gomesama.com",
+    "https://www.gomesama.com",
 ]
+
 CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'gomesama_backend.urls'
@@ -68,7 +83,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'gomesama_backend.wsgi.application'
 
-# 🔹 Base de datos (SQLite en local, PostgreSQL en Fly.io)
 DATABASES = {
     'default': dj_database_url.config(
         default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
@@ -88,17 +102,23 @@ TIME_ZONE = 'America/Argentina/Buenos_Aires'
 USE_I18N = True
 USE_TZ = True
 
-# 🔹 Archivos estáticos
+# Archivos estáticos
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# 🔹 Archivos de media (imágenes)
+# Solo configurar Cloudinary si la variable está disponible (runtime)
+if os.environ.get('CLOUDINARY_URL'):
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# Local media (fallback en desarrollo)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# 👉 En producción forzamos la URL de Fly.io para media
-if not DEBUG:
-    MEDIA_URL = 'https://gomesama-backend.fly.dev/media/'
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+PORT = int(os.environ.get("PORT", 8080))
+
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

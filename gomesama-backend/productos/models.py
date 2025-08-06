@@ -1,4 +1,14 @@
 from django.db import models
+import os
+
+# Import condicional del storage
+if os.environ.get("CLOUDINARY_URL"):
+    from cloudinary_storage.storage import MediaCloudinaryStorage
+    cloud_storage = MediaCloudinaryStorage()
+else:
+    from django.core.files.storage import FileSystemStorage
+    cloud_storage = FileSystemStorage()
+
 
 class Producto(models.Model):
     CATEGORIAS = [
@@ -14,7 +24,14 @@ class Producto(models.Model):
     descripcion = models.TextField(blank=True)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.PositiveIntegerField(default=0)
-    imagen = models.ImageField(upload_to="productos/", blank=True, null=True)
+
+    imagen = models.ImageField(
+        upload_to="productos/",
+        storage=cloud_storage,  # 👈 usamos la variable elegida según entorno
+        blank=True,
+        null=True
+    )
+
     categoria = models.CharField(max_length=50, choices=CATEGORIAS, default="Golosinas")
 
     def __str__(self):
