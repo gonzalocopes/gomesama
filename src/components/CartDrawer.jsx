@@ -5,40 +5,45 @@ import axios from "axios";
 export default function CartDrawer({ isOpen, onClose }) {
   const { cart, removeFromCart, clearCart } = useCart();
 
+  // 🔹 Calcular total correctamente con cantidad real
   const total = cart.reduce((acc, item) => {
-    const cantidad = Number(item.cantidad) || 1;
+    const cantidad = Number(item.cantidad);
     const precio = Number(item.precio) || 0;
     return acc + precio * cantidad;
   }, 0);
 
   const handleFinalizar = async () => {
     try {
-      // 1️⃣ Enviar pedido al backend
-      await axios.post("http://127.0.0.1:8000/api/pedidos/", {
+      // 🌍 Enviar pedido al backend
+      await axios.post("https://gomesama-backend.fly.dev/api/pedidos/", {
         nombre_cliente: "Cliente Web",
         telefono_cliente: "5491136424020",
         productos: JSON.stringify(
           cart.map(item => ({
             id: item.id,
             nombre: item.nombre,
-            cantidad: item.cantidad || 1
+            cantidad: Number(item.cantidad)
           }))
         ),
         total: total,
         completado: false
       });
 
-      // 2️⃣ Enviar mensaje a WhatsApp
-      const mensaje = `*Nuevo Pedido Gomesama*%0A` +
+      // 📲 Generar mensaje para WhatsApp
+      const mensaje = encodeURIComponent(
+        `*Nuevo Pedido Gomesama*\n` +
         cart.map(item => {
-          const cantidad = Number(item.cantidad) || 1;
+          const cantidad = Number(item.cantidad);
           return `• ${item.nombre} x${cantidad} - $${(item.precio * cantidad).toFixed(2)}`;
-        }).join("%0A") +
-        `%0A*Total:* $${total.toFixed(2)}%0A Confirmar pedido en este chat`;
+        }).join("\n") +
+        `\n*Total:* $${total.toFixed(2)}\nConfirmar pedido en este chat`
+      );
 
+      // 📩 Redirigir a WhatsApp
       const url = `https://wa.me/5491136424020?text=${mensaje}`;
       window.open(url, "_blank");
 
+      // 🧹 Vaciar carrito
       clearCart();
     } catch (error) {
       console.error("Error al enviar el pedido:", error);
@@ -69,8 +74,9 @@ export default function CartDrawer({ isOpen, onClose }) {
             >
               <div>
                 <p className="font-semibold">{item.nombre}</p>
+                {/* 🔹 Mostrar cantidad real y precio total de ese producto */}
                 <p className="text-sm text-gray-500">
-                  x{item.cantidad || 1} - ${Number(item.precio).toFixed(2)}
+                  x{item.cantidad} - ${(item.precio * item.cantidad).toFixed(2)}
                 </p>
               </div>
               <button

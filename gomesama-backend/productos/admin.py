@@ -2,14 +2,50 @@ from django.contrib import admin, messages
 from .models import Producto, Pedido
 import json
 from django.utils.html import format_html
+from django import forms
 
+class ProductoAdminForm(forms.ModelForm):
+    class Meta:
+        model = Producto
+        fields = '__all__'
+    
+    def clean_imagen(self):
+        imagen = self.cleaned_data.get('imagen')
+        if imagen:
+            # Validar tamaño máximo (10MB)
+            if hasattr(imagen, 'size') and imagen.size > 10 * 1024 * 1024:
+                raise forms.ValidationError("La imagen es demasiado grande (máximo 10MB)")
+            
+            # Validar tipos de archivo
+            if hasattr(imagen, 'content_type'):
+                valid_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+                if imagen.content_type not in valid_types:
+                    raise forms.ValidationError("Formato de imagen no soportado. Use JPEG, PNG, GIF o WEBP")
+        
+        return imagen
 
 @admin.register(Producto)
 class ProductoAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'precio', 'stock')
+    form = ProductoAdminForm
+    list_display = ('nombre', 'precio', 'stock', 'mostrar_imagen', 'categoria')
     search_fields = ('nombre',)
-    list_filter = ('stock',)
+    list_filter = ('stock', 'categoria')
+    readonly_fields = ('mostrar_imagen',)
+    
+    def mostrar_imagen(self, obj):
+        if obj.imagen:
+            return format_html('<img src="{}" width="50" style="border-radius: 5px;" />', obj.imagen.url)
+        return "-"
+    mostrar_imagen.short_description = "Imagen"
 
+    def save_model(self, request, obj, form, change):
+        try:
+            # Django-cloudinary-storage maneja automáticamente la subida
+            super().save_model(request, obj, form, change)
+            messages.success(request, f"Producto '{obj.nombre}' guardado correctamente.")
+        except Exception as e:
+            messages.error(request, f"Error al guardar el producto: {str(e)}")
+            raise
 
 @admin.register(Pedido)
 class PedidoAdmin(admin.ModelAdmin):
@@ -17,6 +53,7 @@ class PedidoAdmin(admin.ModelAdmin):
     list_filter = ('completado', 'fecha')
     search_fields = ('nombre_cliente', 'telefono_cliente')
     actions = ['marcar_completado']
+    readonly_fields = ('fecha',)
 
     def get_queryset(self, request):
         """

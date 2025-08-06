@@ -35,12 +35,17 @@ export default function NavBar() {
             </span>
           </Link>
 
-          {/* Botón menú hamburguesa */}
+          {/* Botón menú hamburguesa con contador */}
           <button
             className="text-white md:hidden text-2xl relative z-50"
             onClick={() => setMenuOpen(!menuOpen)}
           >
             ☰
+            {cart.length > 0 && (
+              <span className="absolute -top-2 -right-3 bg-yellow-400 text-black text-xs font-bold px-1.5 rounded-full">
+                {cart.length}
+              </span>
+            )}
           </button>
         </div>
 

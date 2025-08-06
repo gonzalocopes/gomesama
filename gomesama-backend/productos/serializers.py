@@ -1,18 +1,17 @@
-from .models import Producto, Pedido
 from rest_framework import serializers
+from .models import Producto, Pedido
 
 class ProductoSerializer(serializers.ModelSerializer):
-    imagen = serializers.SerializerMethodField()
-
     class Meta:
         model = Producto
         fields = '__all__'
-
-    def get_imagen(self, obj):
-        request = self.context.get('request')
-        if obj.imagen and request:
-            return request.build_absolute_uri(obj.imagen.url)
-        return None
+        read_only_fields = ('id',)
+    
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        if instance.imagen:
+            representation['imagen'] = instance.imagen.url
+        return representation
 
 class PedidoSerializer(serializers.ModelSerializer):
     class Meta:

@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # 🔹 Cloudinary
+    # Cloudinary - ORDEN CORRECTO
     'cloudinary_storage',
     'cloudinary',
 
@@ -107,21 +107,40 @@ TIME_ZONE = 'America/Argentina/Buenos_Aires'
 USE_I18N = True
 USE_TZ = True
 
-# 🔹 Archivos estáticos
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# 🔹 Configuración Cloudinary (usa CLOUDINARY_URL de Fly.io)
-cloudinary.config(secure=True)
+# CONFIGURACIÓN CLOUDINARY CORREGIDA
+cloudinary.config(
+    cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME', 'dikddyiig'),
+    api_key=os.environ.get('CLOUDINARY_API_KEY', '854742634483823'),
+    api_secret=os.environ.get('CLOUDINARY_API_SECRET', 'eSUK767wwwk69bIFzUBBGIAAyA'),
+    secure=True
+)
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME', 'dikddyiig'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY', '854742634483823'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', 'eSUK767wwwk69bIFzUBBGIAAyA'),
+    'SECURE': True,
+}
+
+# Configuración de archivos
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+FILE_UPLOAD_HANDLERS = [
+    'django.core.files.uploadhandler.MemoryFileUploadHandler',
+    'django.core.files.uploadhandler.TemporaryFileUploadHandler',
+]
+
+FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10MB
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10MB
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# 🔹 Fly.io port
 PORT = int(os.environ.get("PORT", 8080))
 
-# 🔹 SSL en producción
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

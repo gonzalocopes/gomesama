@@ -6,6 +6,9 @@ primary_region = "gru"
   dockerfile = "Dockerfile"
   ignorefile = ".dockerignore"
 
+[build.args]
+  DISABLE_COLLECTSTATIC = "1"   # 👈 Desactiva collectstatic en deploy
+
 [env]
   DJANGO_SETTINGS_MODULE = "gomesama_backend.settings"
   PYTHONUNBUFFERED = "1"
