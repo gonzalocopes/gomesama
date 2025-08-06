@@ -3,7 +3,6 @@ import axios from "axios";
 import { useCart } from "../context/CartContext";
 import { motion } from "framer-motion";
 
-
 export default function Catalog() {
   const { addToCart } = useCart();
   const [productos, setProductos] = useState([]);
@@ -15,7 +14,7 @@ export default function Catalog() {
 
   const fetchProductos = () => {
     axios
-      .get("https://gonzalocopes.onrender.com/api/productos/")
+      .get("https://gomesama-backend.fly.dev/api/productos/")
       .then((res) => setProductos(res.data))
       .catch((err) => console.error("Error cargando productos:", err));
   };
@@ -36,7 +35,6 @@ export default function Catalog() {
     });
   };
 
-  // 🔍 Filtrar productos según categoría y búsqueda mejorada
   const productosFiltrados = productos.filter((p) => {
     const coincideCategoria =
       categoriaSeleccionada === "Todos" ||
@@ -63,7 +61,6 @@ export default function Catalog() {
 
   return (
     <div className="pt-24 md:pt-28 px-4">
-      {/* Barra de búsqueda */}
       <div className="flex justify-center mb-4">
         <input
           type="text"
@@ -74,7 +71,6 @@ export default function Catalog() {
         />
       </div>
 
-      {/* Filtros de categorías */}
       <div className="flex flex-wrap justify-center gap-2 mb-6">
         {categorias.map((cat) => (
           <button
@@ -91,7 +87,6 @@ export default function Catalog() {
         ))}
       </div>
 
-      {/* Mostrar mensaje si no hay productos */}
       {productosFiltrados.length === 0 ? (
         <div className="text-center text-gray-600 text-lg font-semibold mt-10">
           No hay productos disponibles
@@ -107,7 +102,6 @@ export default function Catalog() {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ delay: index * 0.02, duration: 0.3 }}
             >
-              {/* Imagen */}
               <div className="relative w-full h-60 flex justify-center items-center bg-white">
                 <img
                   src={p.imagen}
@@ -121,7 +115,6 @@ export default function Catalog() {
                 )}
               </div>
 
-              {/* Info producto */}
               <div className="p-4 flex flex-col justify-between flex-grow">
                 <div>
                   <h2 className="text-lg font-bold text-gomesamaRed">{p.nombre}</h2>
@@ -134,7 +127,6 @@ export default function Catalog() {
                   </p>
                 </div>
 
-                {/* Selector de cantidad */}
                 <div className="flex items-center gap-2 mt-auto">
                   <input
                     type="number"

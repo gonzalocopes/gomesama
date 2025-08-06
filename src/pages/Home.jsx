@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import logo from "../assets/logo.png";
-import instagramLogo from "../assets/instagram.png"; // 📌 Asegúrate de tener tu logo en assets
+import instagramLogo from "../assets/instagram.png";
 
 export default function Home() {
   const [destacados, setDestacados] = useState([]);
@@ -11,7 +11,7 @@ export default function Home() {
 
   useEffect(() => {
     axios
-      .get("https://gonzalocopes.onrender.com/api/productos/")
+      .get("https://gomesama-backend.fly.dev/api/productos/")
       .then((res) => {
         const productosRandom = res.data
           .sort(() => Math.random() - 0.5)
@@ -23,9 +23,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-white to-red-50 text-center">
-      {/* Contenido principal con padding para navbar */}
       <main className="flex-grow py-10 px-4 pt-24 md:pt-28">
-        {/* Logo animado */}
         <motion.img
           src={logo}
           alt="Gomesama Logo"
@@ -35,7 +33,6 @@ export default function Home() {
           transition={{ duration: 1 }}
         />
 
-        {/* Título animado */}
         <motion.h1
           className="text-2xl md:text-4xl font-bold text-gomesamaRed mb-4"
           initial={{ opacity: 0, y: -20 }}
@@ -45,7 +42,6 @@ export default function Home() {
           Bienvenido a Gomesama
         </motion.h1>
 
-        {/* Texto */}
         <motion.p
           className="text-gray-700 max-w-xl mx-auto mb-6 text-sm md:text-base px-2"
           initial={{ opacity: 0 }}
@@ -56,7 +52,6 @@ export default function Home() {
           Realizamos envíos a Zona Sur y alrededores. ¡Pedí fácil, rápido y por WhatsApp!
         </motion.p>
 
-        {/* Botón animado */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -70,7 +65,6 @@ export default function Home() {
           </Link>
         </motion.div>
 
-        {/* Productos destacados */}
         <motion.div
           className="mt-12"
           initial={{ opacity: 0 }}
@@ -108,7 +102,6 @@ export default function Home() {
           </div>
         </motion.div>
 
-        {/* Consulta precios/envíos */}
         <motion.div
           className="mt-8 bg-white shadow-lg rounded-lg p-4 max-w-md mx-auto border border-gray-200"
           initial={{ opacity: 0, y: 20 }}
@@ -121,7 +114,6 @@ export default function Home() {
         </motion.div>
       </main>
 
-      {/* Footer */}
       <motion.footer
         className="bg-gomesamaRed text-white py-4 mt-auto text-xs md:text-sm text-center px-2"
         initial={{ opacity: 0, y: 50 }}
